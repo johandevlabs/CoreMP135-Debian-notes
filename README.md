@@ -1,6 +1,12 @@
 # CoreMP135-Debian-notes
 Just some notes and issues I encountered while working with the M5-stack CoreMP135 and Debian Linux
 
+## Useful links and resources
+- https://docs.m5stack.com/en/core/M5CoreMP135
+- https://docs.m5stack.com/en/guide/linux/coremp135/image
+- https://community.m5stack.com/topic/6478/coremp135-debian-image/42
+- https://community.m5stack.com/topic/6513/running-python-gui-apps-on-coremp135-with-debian
+
 ## Journey
 
 1. Downloaded the Debian 12 image (M5_CoreMP135_debian12_20240628) from https://docs.m5stack.com/en/guide/linux/coremp135/image

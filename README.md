@@ -86,4 +86,67 @@ The M5 guide (https://docs.m5stack.com/en/guide/linux/coremp135/buildroot) actua
 In my case, only Broadcom, ralink and marvell drivers where present in `/lib/modules/5.15.118/kernel/drivers/net/wireless/`, so I will be building drivers for Realtek - specifically rtl818x drivers.
 5. Setup a environment for compiling the OS (see also https://docs.m5stack.com/en/guide/linux/coremp135/buildroot ). I am using a Cloud hosted VPC running Ubuntu 22.04.
 6. Follow the steps in the buildroot guide to git clone the `CoreMP153_buildroot` and `external_st` directories
-7. Follow steps on compilations (compilation took approx 30 min in my case)
+7. Follow steps on compilations (compilation took more than 60 min in my case)
+8. Reconfigure the build (`make ARCH=arm menuconfig`), go to `Target Packages -> Hardware` and select all the relevant Realtek drivers (see screenshot).
+9. Re-compile with `make`.
+10. The new drivers for Realtek dongle can now be found in `output/target/lib/modules/5.15.118/extra/`
+```
+$ ls output/target/lib/modules/5.15.118/extra
+8188eu.ko  8189fs.ko  8723bu.ko  8812au.ko  dtbocfg.ko
+8189es.ko  8192eu.ko  8723ds.ko  8821cu.ko
+```
+11. Copy the 8*.ko files to CoreMP135 using ssh or usb-drive and place in `/lib/modules/5.15.118/extra/`
+12. On the CoreMP135, run `depmod -a` and `modprobe 8188eu` to load the driver (note: in my case 8188eu was the relavant driver, other drivers were not used)
+13. Confirm that drivers are loaded
+```
+root@CoreMP135:~# dmesg
+...
+[ 1731.069172] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[ 1731.131069] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[ 1731.141324] cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
+[ 1731.145945] 8188eu: loading out-of-tree module taints kernel.
+[ 1731.391181] RTW: rtl8188eu v5.2.2.4_25483.20171222
+[ 1731.391432] usbcore: registered new interface driver rtl8188eu
+```
+and 
+```
+root@CoreMP135:~# lsmod 
+Module                  Size  Used by
+8188eu               1540096  0
+cfg80211              651264  1 8188eu
+...
+```
+14. Insert USB WiFi dongle in CoreMP135, output from `dmesg` and `ifconfig -a` shows that devices is detected, correctly loaded, and a new WiFi network interface is present (great success!)
+```
+root@CoreMP135:~# dmesg
+...
+[ 1753.338597] usb 2-1.4: new high-speed USB device number 4 using ehci-platform
+[ 1753.533557] RTW: hal_com_config_channel_plan chplan:0x20
+[ 1753.534556] RTW: rtw_regsty_chk_target_tx_power_valid return false for band:0, path:0, rs:0, t:-1
+```
+and
+```
+root@CoreMP135:~# ifconfig -a
+...
+wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.119  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::195a:3c18:1f9d:610b  prefixlen 64  scopeid 0x20<link>
+        inet6 fdd9:dc0f:bcd:e7eb:80d0:fd82:4e49:c658  prefixlen 64  scopeid 0x0<global>
+        ether e0:b2:f1:80:0c:63  txqueuelen 1000  (Ethernet)
+        RX packets 1192  bytes 450683 (440.1 KiB)
+        RX errors 0  dropped 160  overruns 0  frame 0
+        TX packets 174  bytes 22196 (21.6 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+15. Configure WiFi to connect to your access point (e.g. using `nmtui`)
+16. Check connection to internet
+```
+root@CoreMP135:~# ping google.com 
+PING google.com (142.251.36.14) 56(84) bytes of data.
+64 bytes from ams15s44-in-f14.1e100.net (142.251.36.14): icmp_seq=1 ttl=114 time=14.0 ms
+64 bytes from ams15s44-in-f14.1e100.net (142.251.36.14): icmp_seq=2 ttl=114 time=15.2 ms
+64 bytes from ams15s44-in-f14.1e100.net (142.251.36.14): icmp_seq=3 ttl=114 time=24.4 ms
+```
+### Notes and after thoughs
+- I had to deviate from the M5Stack guide (https://docs.m5stack.com/en/guide/linux/coremp135/buildroot) because I could get all the steps to work correctly - in particular the custom firmware compilation)
+- It accured to me that a much simpler way of getting needed drivers would be `apt install firmware-realtek` (I have not tested but it should provide all the needed drivers). This method would require internet access on the CoreMP135, e.g. through ethernet.

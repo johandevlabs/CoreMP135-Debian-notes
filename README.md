@@ -78,3 +78,12 @@ Unfortunately, it shows no wlan0 interface
 After digging around some more, it would seem that the M5 Debian OS does not include support for my WiFi dongle ... 
 
 The M5 guide (https://docs.m5stack.com/en/guide/linux/coremp135/buildroot) actually talks about this. Their suggested solution is recompile OS image with buildroot and configure to include needed wifi drivers (rtlxxxx in my case)
+
+### Building drivers for USB WiFi dongle
+
+1. Confirm which version of the kernel the CoreMP153 is using (`uname -r`). In my case, I am using `5.15.118`
+3. Confirm which drivers you need to build (e.g. insert USB WiFi adapter and type `lsusb`, in my case it showed `Realtek Semiconductor Corp. RTL8188ETV Wireless LAN 802.11n Network Adapter`).
+In my case, only Broadcom, ralink and marvell drivers where present in `/lib/modules/5.15.118/kernel/drivers/net/wireless/`, so I will be building drivers for Realtek - specifically rtl818x drivers.
+5. Setup a environment for compiling the OS (see also https://docs.m5stack.com/en/guide/linux/coremp135/buildroot ). I am using a Cloud hosted VPC running Ubuntu 22.04.
+6. Follow the steps in the buildroot guide to git clone the `CoreMP153_buildroot` and `external_st` directories
+7. Follow steps on compilations (compilation took approx 30 min in my case)

@@ -149,4 +149,4 @@ PING google.com (142.251.36.14) 56(84) bytes of data.
 ```
 ### Notes and after thoughs
 - I had to deviate from the M5Stack guide (https://docs.m5stack.com/en/guide/linux/coremp135/buildroot) because I could get all the steps to work correctly - in particular the custom firmware compilation)
-- It accured to me that a much simpler way of getting needed drivers would be `apt install firmware-realtek` (I have not tested but it should provide all the needed drivers). This method would require internet access on the CoreMP135, e.g. through ethernet.
+- It accured to me that a much simpler way of getting needed drivers would be `apt install firmware-realtek` (I have not tested but it should provide all the needed drivers). This method would require internet access on the CoreMP135, e.g. through ethernet. Alternatively download (https://packages.debian.org/bookworm/all/firmware-realtek/download) and transfer via USB-Drive.

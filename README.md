@@ -19,7 +19,7 @@ Just some notes and issues I encountered while working with the M5-stack CoreMP1
 
 | Issue | Solution |
 | ---- | ----|
-| `free -m` only displays 441 MB ram (not 4GB!) | TBD |
+| `free -m` only displays 441 MB ram (not 4GB!) | Device only contains 512 MB ram, M5-stack wrote 4 Gb (giga-bit in their datasheet) |
 | The root partion is not expanded to take up all space available on SD card (Debian image only allocates 1GB). | Use provided MMC resize tool (`/usr/local/m5stack/resize_mmc.sh`)
 
 ## To do
@@ -30,6 +30,13 @@ Just some notes and issues I encountered while working with the M5-stack CoreMP1
 - USB LTE dongle
 - Setup time and RTC
 
+## Interacting with CoreMP153 over USB-C
+
+Connect USB-C to laptop (I am using Debian 11). 
+
+1. Check that CoreMP153 serial interface shows up (`ls /dev/tty*`). In my case it shows up as `/dev/ttyACM0`.
+2. Connect with serial monitor software (e.g. `picocom --baud 115200 /dev/ttyACM0`)
+3. When prompted, login in with root, root. Sometimes 'serial gibberish' will cause a random user to be inputted when connecting with picocom -> just press enter to fault back to login dialogue
 
 ## Enabeling WiFi through USB dongle
 

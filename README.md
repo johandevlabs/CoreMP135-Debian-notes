@@ -20,7 +20,8 @@ Just some notes and issues I encountered while working with the M5-stack CoreMP1
 | Issue | Solution |
 | ---- | ----|
 | `free -m` only displays 441 MB ram (not 4GB!) | Device only contains 512 MB ram, M5-stack wrote 4 Gb (giga-bit in their datasheet) |
-| The root partion is not expanded to take up all space available on SD card (Debian image only allocates 1GB). | Use provided MMC resize tool (`/usr/local/m5stack/resize_mmc.sh`)
+| The root partion is not expanded to take up all space available on SD card (Debian image only allocates 1GB). | Use provided MMC resize tool (`/usr/local/m5stack/resize_mmc.sh`) |
+| CoreMP135 does not support WiFi dongle (no wifi interface shown in `ifconfig -a`) | See section "Enabeling WiFi through USB dongle" below |
 
 ## To do
 

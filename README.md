@@ -161,3 +161,9 @@ https://github.com/m5stack/CoreMP135_buildroot-external-st/blob/st/2023.02.10/to
 
 How to implement (Japanese)
 https://qiita.com/nnn112358/items/44921e2470353653058e
+
+#### framebuffer notes
+- FBTFT drivers under kernel extensions should not be enabled "this extra
+	  package is only needed for linux kernels until v3.19, since
+	  v4.0 the drivers are included in the staging area" see https://giters.com/notro/fbtft/issues/590
+- https://community.milkv.io/t/spi-milk-v-duo-st7735/625 a thread on working with framebuffer TFT displays directly from Linux console (using Milk V DUO S)

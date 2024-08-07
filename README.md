@@ -167,3 +167,6 @@ https://qiita.com/nnn112358/items/44921e2470353653058e
 	  package is only needed for linux kernels until v3.19, since
 	  v4.0 the drivers are included in the staging area" see https://giters.com/notro/fbtft/issues/590
 - https://community.milkv.io/t/spi-milk-v-duo-st7735/625 a thread on working with framebuffer TFT displays directly from Linux console (using Milk V DUO S)
+- https://github.com/notro/fbtft?tab=readme-ov-file
+- https://milkv.io/docs/duo/resources/spilvgl
+- https://community.milkv.io/t/milk-v-duo-spi-st7789/131 all up and running on milk v duo!!

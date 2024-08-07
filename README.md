@@ -170,4 +170,14 @@ https://qiita.com/nnn112358/items/44921e2470353653058e
 - https://github.com/notro/fbtft?tab=readme-ov-file
 - https://milkv.io/docs/duo/resources/spilvgl
 - https://community.milkv.io/t/milk-v-duo-spi-st7789/131 all up and running on milk v duo!!
-- https://stackoverflow.com/questions/48627344/what-is-the-relationship-between-framebuffer-vt-and-tty some explanations regarding fb and tty
+- https://stackoverflow.com/questions/48627344/what-is-the-relationship-between-framebuffer-vt-and-tty some explanations regarding fb and tty-
+
+```
+sudo apt install python3-pil
+sudo apt install jp2a
+sudo apt install imagemagick
+
+echo -en "hello\nworld" | python3 -c "import sys; from PIL import Image, ImageDraw, ImageFont; img=Image.new('RGB',(800,600)); draw = ImageDraw.Draw(img); font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMono.ttf', 200); [draw.text((0, i[0]*20), i[1].rstrip('\n'), (255,255,255), font=font) for i in enumerate(sys.stdin)]; img.save('sample-out.png')" && display sample-out.png
+convert sample-out.png sample-out.jpg
+jp2a -i --chars="..|00xx@@" sample-out.jpg | tee sample-out.txt
+```

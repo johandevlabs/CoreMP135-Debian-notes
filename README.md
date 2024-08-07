@@ -170,3 +170,4 @@ https://qiita.com/nnn112358/items/44921e2470353653058e
 - https://github.com/notro/fbtft?tab=readme-ov-file
 - https://milkv.io/docs/duo/resources/spilvgl
 - https://community.milkv.io/t/milk-v-duo-spi-st7789/131 all up and running on milk v duo!!
+- https://stackoverflow.com/questions/48627344/what-is-the-relationship-between-framebuffer-vt-and-tty some explanations regarding fb and tty

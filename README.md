@@ -152,15 +152,18 @@ PING google.com (142.251.36.14) 56(84) bytes of data.
 - I had to deviate from the M5Stack guide (https://docs.m5stack.com/en/guide/linux/coremp135/buildroot) because I could get all the steps to work correctly - in particular the custom firmware compilation)
 - It accured to me that a much simpler way of getting needed drivers would be `apt install firmware-realtek` (I have not tested but it should provide all the needed drivers). This method would require internet access on the CoreMP135, e.g. through ethernet. Alternatively download (https://packages.debian.org/bookworm/all/firmware-realtek/download) and transfer via USB-Drive.
 
-### Unorganized copy pastes
+## Showing a terminal on the LCD TFT display
 
-A script to build Debian image is now available in the M5Stack repository.
-
-CoreMP135_buildroot-external-st
-https://github.com/m5stack/CoreMP135_buildroot-external-st/blob/st/2023.02.10/tools/creat_coremp135_debian12_image.sh
-
-How to implement (Japanese)
-https://qiita.com/nnn112358/items/44921e2470353653058e
+Very briefly: 
+- The OS handles the LCD TFT as a framebuffer (`/dev/fb1`). I don't know what `/dev/fb0`is.
+- The CoreMP135 Debian image comes with `fbv`- a program for showing jpg pictures on the framebuffer (i.e. the TFT LCD). To use it, one should first `. /usr/local/m5stack/bashrc`then one can display jpgs on the tft with `/usr/local/m5stack/bin/fbv /usr/local/m5stack/logo2.jpg`
+- The TFT can be cleared with `cat /dev/zero > /dev/fb1`
+- Show randon static on the tft with `cat /dev/urandon > /dev/fb1`
+- FBTERM can be used to display a terminal on the framebuffer
+- - `sudo apt install fbterm`
+  - `export FRAMEBUFFER=/dev/fb1`
+  - `fbterm -s 12 < /dev/tty1&
+  - TBC
 
 #### framebuffer notes
 - FBTFT drivers under kernel extensions should not be enabled "this extra
@@ -172,6 +175,18 @@ https://qiita.com/nnn112358/items/44921e2470353653058e
 - https://community.milkv.io/t/milk-v-duo-spi-st7789/131 all up and running on milk v duo!!
 - https://stackoverflow.com/questions/48627344/what-is-the-relationship-between-framebuffer-vt-and-tty some explanations regarding fb and tty-
 - https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/core/ILI9342C-ILITEK.pdf
+
+### Unorganized copy pastes
+
+A script to build Debian image is now available in the M5Stack repository.
+
+CoreMP135_buildroot-external-st
+https://github.com/m5stack/CoreMP135_buildroot-external-st/blob/st/2023.02.10/tools/creat_coremp135_debian12_image.sh
+
+How to implement (Japanese)
+https://qiita.com/nnn112358/items/44921e2470353653058e
+
+
 
 ```
 sudo apt install python3-pil

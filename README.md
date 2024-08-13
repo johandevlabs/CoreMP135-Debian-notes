@@ -162,7 +162,7 @@ Very briefly:
 - FBTERM can be used to display a terminal on the framebuffer
 - - `sudo apt install fbterm`
   - `export FRAMEBUFFER=/dev/fb1`
-  - `fbterm -s 12 < /dev/tty1&
+  - `fbterm -s 12 < /dev/tty1&`
   - TBC
 
 #### framebuffer notes

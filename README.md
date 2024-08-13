@@ -155,15 +155,29 @@ PING google.com (142.251.36.14) 56(84) bytes of data.
 ## Showing a terminal on the LCD TFT display
 
 Very briefly: 
-- The OS handles the LCD TFT as a framebuffer (`/dev/fb1`). I don't know what `/dev/fb0`is.
-- The CoreMP135 Debian image comes with `fbv`- a program for showing jpg pictures on the framebuffer (i.e. the TFT LCD). To use it, one should first `. /usr/local/m5stack/bashrc`then one can display jpgs on the tft with `/usr/local/m5stack/bin/fbv /usr/local/m5stack/logo2.jpg`
-- The TFT can be cleared with `cat /dev/zero > /dev/fb1`
-- Show randon static on the tft with `cat /dev/urandon > /dev/fb1`
-- FBTERM can be used to display a terminal on the framebuffer
-- - `sudo apt install fbterm`
-  - `export FRAMEBUFFER=/dev/fb1`
-  - `fbterm -s 12 < /dev/tty1&`
-  - TBC
+- The CoreMP135 contains a ILITEK ILI9342C LCD TFT display with touch
+- The Debian OS recognizes as the display as a framebuffer and makes it accesible at `/dev/fb1`
+- Low level interaction directly with `fb1` is below, see examples below. In all the included examples, I was signed in as `root` via the USB-C interface (ttyGS0)
+```
+# signed in as root
+cat /dev/zero > /dev/fb1 # clear display
+cat /dev/urandom > /dev/fb1 # show random 'static' on display
+echo "HELLO WORLD" > /dev/fb1 # will show some extremely small in the top left corner - not discernible
+```
+- The M5Stack CoreMP135 Debian image includes `fbv` - a program for rendering `.jpg` on the framebuffer (TFT LCD). Example:
+```
+# signed in as root
+. /usr/local/m5stack/bashrc # prepare environment for using fbv
+/usr/local/m5stack/bin/fbv /root/mycoolpic.jpg # display .jpg on framebuffer, might only show part depending on jpg resolution
+```
+- It is also possible to show a (somewhat) fully functional terminal on the TFT LCD display using the `fbterm` program:
+```
+apt install fbterm # install FbTerm
+export FRAMEBUFFER=/dev/fb1 # Tell FbTerm to use fb1 as framebuffer
+fbterm -s 12 < /dev/tty1 & # Tell fbterm to diplay tty1 terminal on fb1 with size 12. 
+```
+- Connect a BT keyboard or similar and enjoy a somewhat functional terminal
+![Screenshot from 2024-08-13 09-49-45](https://github.com/user-attachments/assets/4a878c59-4ed6-4d79-b186-8dccd47f0370)
 
 #### framebuffer notes
 - FBTFT drivers under kernel extensions should not be enabled "this extra
